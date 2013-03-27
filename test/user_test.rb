@@ -14,6 +14,11 @@ class UserTest < Test::Unit::TestCase
     assert_equal 1, user.id
   end
 
+  def test_all
+    user = User.all.first
+    assert_equal 1, user.id
+  end
+
   def test_columns
     assert_equal [:id, :name], User.columns
   end

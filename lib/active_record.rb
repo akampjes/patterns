@@ -9,15 +9,44 @@ module ActiveRecord
     end
 
     def method_missing(name, *args)
-      if self.class.columns.include?(name)
-        @attributes[name]
-      else
+      if self.class.attribute_methods_generated?
         super
+      else
+        self.class.define_attribute_methods
+
+        if self.class.columns.include?(name)
+          send name
+        else
+          super
+        end
       end
     end
 
+    def self.define_attribute_methods
+      columns.each do |column|
+        class_eval <<-RUBY
+          def #{column}
+            @attributes[:#{column}]
+          end
+        RUBY
+      end
+      @attribute_methods_generated = true
+    end
+
+    def self.attribute_methods_generated?
+      @attribute_methods_generated
+    end
+
+    # def name
+    #   @attributes[:name]
+    # end
+
     def self.find(id)
       find_by_sql("SELECT * FROM #{table_name} WHERE id = #{id.to_i} LIMIT 1").first
+    end
+
+    def self.all
+      find_by_sql("SELECT * FROM #{table_name}")
     end
 
     def self.find_by_sql(sql)
