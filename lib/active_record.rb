@@ -24,11 +24,11 @@ module ActiveRecord
 
     def self.define_attribute_methods
       columns.each do |column|
-        class_eval <<-RUBY
+        User.class_eval <<-EOS
           def #{column}
             @attributes[:#{column}]
           end
-        RUBY
+        EOS
       end
       @attribute_methods_generated = true
     end
