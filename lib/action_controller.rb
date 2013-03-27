@@ -9,5 +9,6 @@ module ActionController
 
   class Base < Metal
     include Filters
+    include Rendering
   end
 end

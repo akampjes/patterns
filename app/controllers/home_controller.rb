@@ -2,7 +2,8 @@ class HomeController < ApplicationController
   before_filter :header
 
   def index
-    response.write "<p>Hello from home controller</p>"
+    @message = "this is a message"
+    render :index
   end
 
   def header
