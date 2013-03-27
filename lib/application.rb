@@ -18,8 +18,9 @@ class Application
 
   def route(path)
     # /home/index => ["home", "index"]
-    _, controller_name, action_name = path.split("/") # ["", "home", "index"]
-    [controller_name || "home", action_name || "index"]
+    # _, controller_name, action_name = path.split("/") # ["", "home", "index"]
+    # [controller_name || "home", action_name || "index"]
+    Routes.recognize(path)
   end
 
   def load_controller_class(name)
