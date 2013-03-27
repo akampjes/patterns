@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class FiltersTestController < ApplicationController
-  # around_filter :around1
+  around_filter :around1
   before_filter :before
-  # around_filter :around2
-  # after_filter :after
+  around_filter :around2
+  after_filter :after
 
   def initialize(out)
     @out = out
@@ -40,8 +40,8 @@ class FiltersTest < Test::Unit::TestCase
     out = []
     FiltersTestController.new(out).process(:index)
     
-    assert_equal [:before,
-                  :index], out
+    # assert_equal [:before,
+    #               :index], out
     
     # With after_filter
     # assert_equal [:before,
@@ -49,12 +49,12 @@ class FiltersTest < Test::Unit::TestCase
     #               :after], out
 
     # With around_filters
-    # assert_equal ["around1",
-    #                 :before,
-    #                 "around2",
-    #                   :index,
-    #                   :after,
-    #                 "/around2",
-    #               "/around1"], out
+    assert_equal ["around1",
+                    :before,
+                    "around2",
+                      :index,
+                      :after,
+                    "/around2",
+                  "/around1"], out
   end
 end
