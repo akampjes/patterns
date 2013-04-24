@@ -49,7 +49,12 @@ module ActiveRecord
     end
 
     def self.all
-      find_by_sql("SELECT * FROM #{table_name}")
+      # find_by_sql("SELECT * FROM #{table_name}")
+      Relation.new(self)
+    end
+
+    def self.where(values)
+      all.where(values)
     end
 
     def self.find_by_sql(sql)
