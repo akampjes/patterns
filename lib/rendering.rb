@@ -5,19 +5,14 @@ module Rendering
     response.write render_to_string(action)
   end
 
-  def content_for(name, content)
-    # In Rails: stored in something called ViewFlow, which is just a Hash by default.
-    #           Uses fibers when streaming template rendering.
-    @content_for ||= {}
-    @content_for[name] = content
-  end
-
   def render_to_string(action)
     path = template_path(action)
     method = compile_template(path)
+    # content = send(method)
     content_for :layout, send(method)
 
     method = compile_template(layout_path)
+    # send(method) { content }
     send(method) { |name = :layout| @content_for[name] }
   end
 
@@ -35,6 +30,13 @@ module Rendering
     end
 
     method_name
+  end
+
+  def content_for(name, content)
+    # In Rails: stored in something called ViewFlow, which is just a Hash by default.
+    #           Uses fibers when streaming template rendering.
+    @content_for ||= {}
+    @content_for[name] = content
   end
 
   def template_path(action)
