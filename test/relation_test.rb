@@ -24,8 +24,13 @@ class RelationTest < Test::Unit::TestCase
     assert_equal 1, user.id
   end
   
-  def test_proxy_methods_from_class
+  def test_proxy_array_methods
     user = User.where("id = 1").first
     assert_equal 1, user.id
+  end
+
+  def test_proxy_class_methods
+    sql = User.where("id = 1").search("Marc").to_sql
+    assert_equal "SELECT * FROM users WHERE id = 1 AND name LIKE '%Marc%'", sql
   end
 end

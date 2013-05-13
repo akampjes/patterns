@@ -27,7 +27,7 @@ module ActiveRecord
 
     def self.define_attribute_methods
       columns.each do |column|
-        User.class_eval <<-EOS
+        class_eval <<-EOS
           def #{column}
             @attributes[:#{column}]
           end
@@ -48,15 +48,6 @@ module ActiveRecord
       find_by_sql("SELECT * FROM #{table_name} WHERE id = #{id.to_i} LIMIT 1").first
     end
 
-    def self.all
-      # find_by_sql("SELECT * FROM #{table_name}")
-      Relation.new(self)
-    end
-
-    def self.where(values)
-      all.where(values)
-    end
-
     def self.find_by_sql(sql)
       rows = @@connection.execute(sql) # [ {id: 1, name: "Marc"} ]
       rows.map do |attributes|
@@ -70,6 +61,26 @@ module ActiveRecord
 
     def self.table_name
       name.downcase + "s" # users
+    end
+
+    
+    #### Relation
+
+    def self.all
+      # find_by_sql("SELECT * FROM #{table_name}")
+      current_scope || Relation.new(self)
+    end
+
+    def self.where(values)
+      all.where(values)
+    end
+
+    class << self
+      attr_accessor :current_scope
+    end
+
+    def self.scope(name, body)
+      define_singleton_method name, &body
     end
   end
 end

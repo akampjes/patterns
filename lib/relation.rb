@@ -24,11 +24,20 @@ module ActiveRecord
     end
 
     def method_missing(method, *args, &block)
-      if Array.method_defined?(method)
+      if @klass.respond_to?(method)
+        scoping { @klass.send(method, *args, &block) }
+      elsif Array.method_defined?(method)
         to_a.send(method, *args, &block)
       else
         super
       end
+    end
+
+    def scoping
+      previous, @klass.current_scope = @klass.current_scope, self
+      yield
+    ensure
+      @klass.current_scope = previous
     end
   end
 end
