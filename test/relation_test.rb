@@ -24,7 +24,7 @@ class RelationTest < Test::Unit::TestCase
     assert_equal 1, user.id
   end
   
-  def test_proxy_array_methods
+  def test_delegate_to_relation
     user = User.where("id = 1").first
     assert_equal 1, user.id
   end

@@ -48,6 +48,10 @@ module ActiveRecord
       find_by_sql("SELECT * FROM #{table_name} WHERE id = #{id.to_i} LIMIT 1").first
     end
 
+    def self.all
+      find_by_sql("SELECT * FROM #{table_name}")
+    end
+
     def self.find_by_sql(sql)
       rows = @@connection.execute(sql) # [ {id: 1, name: "Marc"} ]
       rows.map do |attributes|
@@ -67,7 +71,6 @@ module ActiveRecord
     #### Relation
 
     def self.all
-      # find_by_sql("SELECT * FROM #{table_name}")
       current_scope || Relation.new(self)
     end
 
