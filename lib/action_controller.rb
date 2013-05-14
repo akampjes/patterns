@@ -1,3 +1,6 @@
+require "filters"
+require "rendering"
+
 module ActionController
   class Metal
     attr_accessor :request, :response

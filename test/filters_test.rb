@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper'
+require "app/controllers/application_controller"
 
 class FiltersTestController < ApplicationController
   around_filter :around1

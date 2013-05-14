@@ -1,5 +1,6 @@
 require "connection_adapter"
 require "active_model"
+require "relation"
 
 module ActiveRecord
   class Base

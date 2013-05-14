@@ -48,6 +48,6 @@ module Rendering
   end
 
   def controller_name
-    self.class.name.gsub(/Controller$/, '').underscore # home
+    self.class.name.gsub(/Controller$/, '').downcase # home
   end
 end
