@@ -22,7 +22,7 @@ module Rendering
     # Compile the template to a method on first pass
     unless respond_to?(method_name)
       template = ERB.new(File.read(path))
-      class_eval <<-CODE
+      self.class.class_eval <<-CODE
         def #{method_name}
           #{template.src}
         end
