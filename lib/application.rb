@@ -1,5 +1,3 @@
-require "application"
-
 require "action_controller"
 
 require "router"
