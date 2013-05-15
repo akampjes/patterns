@@ -71,18 +71,23 @@ module ActiveRecord
     
     #### Relation
 
+    def self.current_scope
+      @current_scope ||= Relation.new(self)
+    end
+    
+    def self.current_scope=(scope)
+      @current_scope = scope
+    end
+
     def self.all
-      current_scope || Relation.new(self)
+      current_scope
     end
 
     def self.where(values)
       all.where(values)
     end
 
-    class << self
-      attr_accessor :current_scope
-    end
-
+    ## Exercise
     def self.scope(name, body)
       define_singleton_method name, &body
     end
