@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 require "active_record"
+require "app/models/user"
 require "relation"
 
 class RelationTest < Test::Unit::TestCase

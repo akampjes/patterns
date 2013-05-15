@@ -11,13 +11,13 @@ module Rendering
     # content = send(method)
     content_for :layout, send(method)
 
-    method = compile_template(layout_path)
-    # send(method) { content }
-    send(method) { |name = :layout| @content_for[name] }
+    layout_method = compile_template(layout_path)
+    # send(layout_method) { content }
+    send(layout_method) { |name = :layout| @content_for[name] }
   end
 
   def compile_template(path)
-    method_name = path.gsub(/[^a-z_]/, '_')
+    method_name = path.gsub(/\W/, '_')
 
     # Compile the template to a method on first pass
     unless respond_to?(method_name)

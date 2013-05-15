@@ -20,7 +20,7 @@ module ActiveRecord
     end
 
     def to_a
-      @klass.find_by_sql(to_sql)
+      @records ||= @klass.find_by_sql(to_sql)
     end
 
     def method_missing(method, *args, &block)
@@ -34,7 +34,8 @@ module ActiveRecord
     end
 
     def scoping
-      previous, @klass.current_scope = @klass.current_scope, self
+      previous = @klass.current_scope
+      @klass.current_scope = self
       yield
     ensure
       @klass.current_scope = previous
